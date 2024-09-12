@@ -1,0 +1,42 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: kubecraftadmin-8
+  links:
+    - url: https://openshift-gitops-server-openshift-gitops.apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com/applications/openshift-gitops/kubecraftadmin-8-dev
+      title: ArgoCD
+      icon: dashboard
+    - url: https://kubecraftadmin-8-kubecraftadmin-8-develop.apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com
+      title: Application
+      icon: dashboard
+    - url: https://github.com/rhdh-skitamura-org/kubecraftadmin-8-app
+      title: App Repository
+      icon: dashboard
+    - url: https://github.com/rhdh-skitamura-org/kubecraftadmin-8-manifest
+      title: Manifest Repository
+    - url: https://devspaces.apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com/#https://github.com/rhdh-skitamura-org/kubecraftadmin-8-app
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+    - url: https://console-openshift-console.apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com/k8s/ns/kubecraftadmin-8-develop/tekton.dev~v1~Pipeline/kubecraftadmin-8-pipeline
+      title: Tekton Pipelines
+      icon: dashboard
+  annotations:
+    argocd/app-selector: argocd.argoproj.io/instance=kubecraftadmin-8-bootstrap
+    tektonci/build-namespace: kubecraftadmin-8-develop
+    backstage.io/kubernetes-id: kubecraftadmin-8
+    backstage.io/kubernetes-namespace: kubecraftadmin-8-develop
+    janus-idp.io/tekton-enabled: "true"
+    janus-idp.io/tekton: kubecraftadmin-8
+    backstage.io/techdocs-ref: url:https://github.com/rhdh-skitamura-org/kubecraftadmin-8-app
+    github.com/project-slug: rhdh-skitamura-org/kubecraftadmin-8-app
+    quay.io/repository-slug: skitamura-quay-org/kubecraftadmin-8-develop/kubecraftadmin-8
+    backstage.io/createdAt: 9/12/2024, 3:46:22 AM
+  labels: {}
+spec:
+  type: api
+  system: system:default/test-system-github
+  lifecycle: production
+  owner: group:rhdh-skitamura-org/skitamura-team
+  git: github
+  git_host_url: github.com
+  git_owner_name: rhdh-skitamura-org

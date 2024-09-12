@@ -1,0 +1,23 @@
+stages:
+  - build
+
+build-job:
+  rules:
+  - changes:
+    - 'docs/**/*'
+    - 'mkdocs.yaml'
+  variables:
+    TECHDOCS_S3_BUCKET_NAME: $TECHDOCS_S3_BUCKET_NAME
+    AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+    AWS_REGION: $AWS_REGION 
+    ENTITY_NAMESPACE: 'default'
+    ENTITY_KIND: 'Component'
+    ENTITY_NAME: $CI_PROJECT_NAME 
+    ENTITY_NAMESPACE: 'default'
+  image: quay.io/redhat-gpte/techdocs-cli
+  stage: build
+  script:
+  - techdocs-cli generate --no-docker --verbose
+  - techdocs-cli publish --publisher-type awsS3 --storage-name $TECHDOCS_S3_BUCKET_NAME --entity $ENTITY_NAMESPACE/$ENTITY_KIND/${ENTITY_NAME::-4}
+  #- techdocs-cli publish --publisher-type awsS3 --storage-name $TECHDOCS_S3_BUCKET_NAME --awsEndpoint $AWS_ENDPOINT --awsS3ForcePathStyle --entity $ENTITY_NAMESPACE/$ENTITY_KIND/$ENTITY_NAME
