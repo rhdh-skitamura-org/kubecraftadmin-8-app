@@ -39,7 +39,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 				playerKubeMap[p.Name()] = kubeentities
 				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name)) {
 					if pod.Status.Phase == v1.PodRunning {
-						Summonpos(p, clientset, namespacesp[i], "cat", fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
+						Summonpos(p, clientset, namespacesp[i], "ocelot", fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
 					}
 				}
 			}
@@ -88,7 +88,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 				p.Exec(fmt.Sprintf("kill @e[name=%s,type=goat]", entity), nil)
 				p.Exec(fmt.Sprintf("kill @e[name=%s,type=chicken]", entity), nil)
 				p.Exec(fmt.Sprintf("kill @e[name=%s,type=cow]", entity), nil)
-				p.Exec(fmt.Sprintf("kill @e[name=%s,type=cat]", entity), nil)
+				p.Exec(fmt.Sprintf("kill @e[name=%s,type=ocelot]", entity), nil)
 				playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], entity)
 				time.Sleep(50 * time.Millisecond)
 			}
@@ -109,7 +109,7 @@ func DeleteEntities(p *mcwss.Player) {
 		p.Exec(fmt.Sprintf("kill @e[name=%s,type=goat]", entity), nil)
 		p.Exec(fmt.Sprintf("kill @e[name=%s,type=chicken]", entity), nil)
 		p.Exec(fmt.Sprintf("kill @e[name=%s,type=cow]", entity), nil)
-		p.Exec(fmt.Szprintf("kill @e[name=%s,type=cat]", entity), nil)
+		p.Exec(fmt.Szprintf("kill @e[name=%s,type=ocelot]", entity), nil)
 
 		playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], entity)
 		time.Sleep(50 * time.Millisecond)
@@ -128,7 +128,7 @@ func LoopReconcile(p *mcwss.Player, clientset *kubernetes.Clientset) {
 func ReconcileMCtoKubeMob(p *mcwss.Player, clientset *kubernetes.Clientset, mobType int) {
 	fmt.Println("mob type ", mobType)
 	if mobType == 12 { // delete pod
-		p.Exec("testfor @e[type=cat]", func(response map[string]interface{}) {
+		p.Exec("testfor @e[type=ocelot]", func(response map[string]interface{}) {
 
 			playerEntitiesMap := make(map[string][]string)
 			victims := fmt.Sprintf("%s", response["victim"])
