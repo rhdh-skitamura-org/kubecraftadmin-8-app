@@ -28,11 +28,11 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 		// Get all Kube entities per namespace
 		for i, ns := range selectednamespaces {
 			pods, _ := clientset.CoreV1().Pods(ns).List(context.TODO(), metav1.ListOptions{})
-			services, _ := clientset.CoreV1().Services(ns).List(context.TODO(), metav1.ListOptions{})
+//			services, _ := clientset.CoreV1().Services(ns).List(context.TODO(), metav1.ListOptions{})
 			deployments, _ := clientset.AppsV1().Deployments(ns).List(context.TODO(), metav1.ListOptions{})
-			rc, _ := clientset.AppsV1().ReplicaSets(ns).List(context.TODO(), metav1.ListOptions{})
-			statefulset, _ := clientset.AppsV1().StatefulSets(ns).List(context.TODO(), metav1.ListOptions{})
-			daemonset, _ := clientset.AppsV1().DaemonSets(ns).List(context.TODO(), metav1.ListOptions{})
+//			rc, _ := clientset.AppsV1().ReplicaSets(ns).List(context.TODO(), metav1.ListOptions{})
+//			statefulset, _ := clientset.AppsV1().StatefulSets(ns).List(context.TODO(), metav1.ListOptions{})
+//			daemonset, _ := clientset.AppsV1().DaemonSets(ns).List(context.TODO(), metav1.ListOptions{})
 
 			for _, pod := range pods.Items {
 				kubeentities = append(kubeentities, fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
@@ -50,34 +50,34 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 					Summonpos(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s:deployment:%s", deployment.Namespace, deployment.Name))
 				}
 			}
-			for _, rcontr := range rc.Items {
-				kubeentities = append(kubeentities, fmt.Sprintf("%s:replicaset:%s", rcontr.Namespace, rcontr.Name))
-				playerKubeMap[p.Name()] = kubeentities
-				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:replicaset:%s", rcontr.Namespace, rcontr.Name)) {
-					Summonpos(p, clientset, namespacesp[i], "cow", fmt.Sprintf("%s:replicaset:%s", rcontr.Namespace, rcontr.Name))
-				}
-			}
-			for _, service := range services.Items {
-				kubeentities = append(kubeentities, fmt.Sprintf("%s:service:%s", service.Namespace, service.Name))
-				playerKubeMap[p.Name()] = kubeentities
-				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:service:%s", service.Namespace, service.Name)) {
-					Summonpos(p, clientset, namespacesp[i], "chicken", fmt.Sprintf("%s:service:%s", service.Namespace, service.Name))
-				}
-			}
-			for _, ss := range statefulset.Items {
-				kubeentities = append(kubeentities, fmt.Sprintf("%s:statefulset:%s", ss.Namespace, ss.Name))
-				playerKubeMap[p.Name()] = kubeentities
-				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:statefulset:%s", ss.Namespace, ss.Name)) {
-					Summonpos(p, clientset, namespacesp[i], "sheep", fmt.Sprintf("%s:statefulset:%s", ss.Namespace, ss.Name))
-				}
-			}
-			for _, ds := range daemonset.Items {
-				kubeentities = append(kubeentities, fmt.Sprintf("%s:daemonset:%s", ds.Namespace, ds.Name))
-				playerKubeMap[p.Name()] = kubeentities
-				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:daemonset:%s", ds.Namespace, ds.Name)) {
-					Summonpos(p, clientset, namespacesp[i], "goat", fmt.Sprintf("%s:daemonset:%s", ds.Namespace, ds.Name))
-				}
-			}
+//			for _, rcontr := range rc.Items {
+//				kubeentities = append(kubeentities, fmt.Sprintf("%s:replicaset:%s", rcontr.Namespace, rcontr.Name))
+//				playerKubeMap[p.Name()] = kubeentities
+//				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:replicaset:%s", rcontr.Namespace, rcontr.Name)) {
+//					Summonpos(p, clientset, namespacesp[i], "cow", fmt.Sprintf("%s:replicaset:%s", rcontr.Namespace, rcontr.Name))
+//				}
+//			}
+//			for _, service := range services.Items {
+//				kubeentities = append(kubeentities, fmt.Sprintf("%s:service:%s", service.Namespace, service.Name))
+//				playerKubeMap[p.Name()] = kubeentities
+//				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:service:%s", service.Namespace, service.Name)) {
+//					Summonpos(p, clientset, namespacesp[i], "chicken", fmt.Sprintf("%s:service:%s", service.Namespace, service.Name))
+//				}
+//			}
+//			for _, ss := range statefulset.Items {
+//				kubeentities = append(kubeentities, fmt.Sprintf("%s:statefulset:%s", ss.Namespace, ss.Name))
+//				playerKubeMap[p.Name()] = kubeentities
+//				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:statefulset:%s", ss.Namespace, ss.Name)) {
+//					Summonpos(p, clientset, namespacesp[i], "sheep", fmt.Sprintf("%s:statefulset:%s", ss.Namespace, ss.Name))
+//				}
+//			}
+//			for _, ds := range daemonset.Items {
+//				kubeentities = append(kubeentities, fmt.Sprintf("%s:daemonset:%s", ds.Namespace, ds.Name))
+//				playerKubeMap[p.Name()] = kubeentities
+//				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:daemonset:%s", ds.Namespace, ds.Name)) {
+//					Summonpos(p, clientset, namespacesp[i], "goat", fmt.Sprintf("%s:daemonset:%s", ds.Namespace, ds.Name))
+//				}
+//			}
 		}
 
 		// Delete entities
