@@ -129,7 +129,7 @@ func LoopReconcile(p *mcwss.Player, clientset *kubernetes.Clientset) {
 // ReconcileMCtoKubeMob will delete a specific resource from Kubernetes based on the entities found in Minecraft. Typically run after mob event.
 func ReconcileMCtoKubeMob(p *mcwss.Player, clientset *kubernetes.Clientset, mobType int) {
 	fmt.Println("mob type ", mobType)
-	if mobType == 12 { // delete pod
+	if mobType == 18 { // delete pod
 		p.Exec("testfor @e[type=rabbit]", func(response map[string]interface{}) {
 
 			playerEntitiesMap := make(map[string][]string)
