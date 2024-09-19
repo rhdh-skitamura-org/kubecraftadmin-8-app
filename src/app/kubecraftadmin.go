@@ -35,11 +35,13 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 //			daemonset, _ := clientset.AppsV1().DaemonSets(ns).List(context.TODO(), metav1.ListOptions{})
 
 			for _, pod := range pods.Items {
-				kubeentities = append(kubeentities, fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
-				playerKubeMap[p.Name()] = kubeentities
-				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name)) {
-					if pod.Status.Phase == v1.PodRunning {
-						Summonpos(p, clientset, namespacesp[i], "rabbit", fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
+				if value, exists := pod.Labels["kubecraft"]; exists && value == "true" {
+					kubeentities = append(kubeentities, fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
+					playerKubeMap[p.Name()] = kubeentities
+					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name)) {
+						if pod.Status.Phase == v1.PodRunning {
+							Summonpos(p, clientset, namespacesp[i], "rabbit", fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
+						}
 					}
 				}
 			}
