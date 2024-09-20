@@ -75,5 +75,3 @@ This way you can build it without requiring a local golang build environment.
 ```
 docker build -t kubecraftadmin .
 ```
-
-
