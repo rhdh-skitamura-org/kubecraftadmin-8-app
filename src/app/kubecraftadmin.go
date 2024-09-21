@@ -141,7 +141,7 @@ func ReconcileMCtoKubeMob(p *mcwss.Player, clientset *kubernetes.Clientset, mobT
 				pods, _ := clientset.CoreV1().Pods(ns).List(context.TODO(), metav1.ListOptions{})
 
 				for _, pod := range pods.Items {
-					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name)) || pod.Status.Phase == v1.PodSucceeded || pod.Status.Phase == v1.PodFailed {
+					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name)) || pod.Status.Phase == "Succeeded" || pod.Status.Phase == "Failed" {
 						fmt.Printf(fmt.Sprintf("Player %s killed %s:pod:%s phase:%s\n", p.Name(), pod.Namespace, pod.Name, pod.Status.Phase))
 						clientset.CoreV1().Pods(pod.Namespace).Delete(context.TODO(), pod.Name, metav1.DeleteOptions{})
 						playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
