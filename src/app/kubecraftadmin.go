@@ -41,6 +41,8 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name)) {
 						if pod.Status.Phase == v1.PodRunning {
 							Summonpos(p, clientset, namespacesp[i], "rabbit", fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
+						} else if pod.Status.Phase == v1.PodSucceeded {
+							p.Exec(fmt.Sprintf("kill @e[name=%s,type=rabbit]", entity), nil)
 						}
 					}
 				}
@@ -84,7 +86,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 
 		// Delete entities
 		for _, entity := range playerEntitiesMap[p.Name()] {
-			if !Contains(playerKubeMap[p.Name()], entity) || pod.Status.Phase == v1.PodSucceeded {
+			if !Contains(playerKubeMap[p.Name()], entity) {
 				p.Exec(fmt.Sprintf("kill @e[name=%s,type=horse]", entity), nil)
 				p.Exec(fmt.Sprintf("kill @e[name=%s,type=sheep]", entity), nil)
 				p.Exec(fmt.Sprintf("kill @e[name=%s,type=goat]", entity), nil)
