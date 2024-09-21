@@ -41,10 +41,17 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name)) {
 						if pod.Status.Phase == v1.PodRunning {
 							Summonpos(p, clientset, namespacesp[i], "rabbit", fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
-						} else if pod.Status.Phase == v1.PodSucceeded {
-							p.Exec(fmt.Sprintf("kill @e[name=%s,type=rabbit]", entity), nil)
 						}
 					}
+				}
+			}
+
+			for _, pod := range pods.Items {
+				// PodがSucceededかつエンティティが存在しない場合、エンティティを削除
+				if  pod.Status.Phase == v1.PodSucceeded {
+					p.Exec(fmt.Sprintf("kill @e[name=%s,type=rabbit]", fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name)), nil)
+					// 他のエンティティも同様に削除
+					playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
 				}
 			}
 //			for _, deployment := range deployments.Items {
