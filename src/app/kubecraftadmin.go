@@ -84,7 +84,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 
 		// Delete entities
 		for _, entity := range playerEntitiesMap[p.Name()] {
-			if !Contains(playerKubeMap[p.Name()], entity) {
+			if !Contains(playerKubeMap[p.Name()], entity) || pod.Status.Phase == v1.PodSucceeded {
 				p.Exec(fmt.Sprintf("kill @e[name=%s,type=horse]", entity), nil)
 				p.Exec(fmt.Sprintf("kill @e[name=%s,type=sheep]", entity), nil)
 				p.Exec(fmt.Sprintf("kill @e[name=%s,type=goat]", entity), nil)
