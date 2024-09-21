@@ -29,7 +29,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 		for i, ns := range selectednamespaces {
 			pods, _ := clientset.CoreV1().Pods(ns).List(context.TODO(), metav1.ListOptions{})
 //			services, _ := clientset.CoreV1().Services(ns).List(context.TODO(), metav1.ListOptions{})
-			deployments, _ := clientset.AppsV1().Deployments(ns).List(context.TODO(), metav1.ListOptions{})
+//			deployments, _ := clientset.AppsV1().Deployments(ns).List(context.TODO(), metav1.ListOptions{})
 //			rc, _ := clientset.AppsV1().ReplicaSets(ns).List(context.TODO(), metav1.ListOptions{})
 //			statefulset, _ := clientset.AppsV1().StatefulSets(ns).List(context.TODO(), metav1.ListOptions{})
 //			daemonset, _ := clientset.AppsV1().DaemonSets(ns).List(context.TODO(), metav1.ListOptions{})
