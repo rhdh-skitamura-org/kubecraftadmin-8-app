@@ -29,7 +29,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 		for i, ns := range selectednamespaces {
 			pods, _ := clientset.CoreV1().Pods(ns).List(context.TODO(), metav1.ListOptions{})
 //			services, _ := clientset.CoreV1().Services(ns).List(context.TODO(), metav1.ListOptions{})
-			deployments, _ := clientset.AppsV1().Deployments(ns).List(context.TODO(), metav1.ListOptions{})
+//			deployments, _ := clientset.AppsV1().Deployments(ns).List(context.TODO(), metav1.ListOptions{})
 //			rc, _ := clientset.AppsV1().ReplicaSets(ns).List(context.TODO(), metav1.ListOptions{})
 //			statefulset, _ := clientset.AppsV1().StatefulSets(ns).List(context.TODO(), metav1.ListOptions{})
 //			daemonset, _ := clientset.AppsV1().DaemonSets(ns).List(context.TODO(), metav1.ListOptions{})
@@ -45,13 +45,13 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 					}
 				}
 			}
-			for _, deployment := range deployments.Items {
-				kubeentities = append(kubeentities, fmt.Sprintf("%s:deployment:%s", deployment.Namespace, deployment.Name))
-				playerKubeMap[p.Name()] = kubeentities
-				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:deployment:%s", deployment.Namespace, deployment.Name)) {
-					Summonpos(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s:deployment:%s", deployment.Namespace, deployment.Name))
-				}
-			}
+//			for _, deployment := range deployments.Items {
+//				kubeentities = append(kubeentities, fmt.Sprintf("%s:deployment:%s", deployment.Namespace, deployment.Name))
+//				playerKubeMap[p.Name()] = kubeentities
+//				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:deployment:%s", deployment.Namespace, deployment.Name)) {
+//					Summonpos(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s:deployment:%s", deployment.Namespace, deployment.Name))
+//				}
+//			}
 //			for _, rcontr := range rc.Items {
 //				kubeentities = append(kubeentities, fmt.Sprintf("%s:replicaset:%s", rcontr.Namespace, rcontr.Name))
 //				playerKubeMap[p.Name()] = kubeentities
@@ -141,8 +141,8 @@ func ReconcileMCtoKubeMob(p *mcwss.Player, clientset *kubernetes.Clientset, mobT
 				pods, _ := clientset.CoreV1().Pods(ns).List(context.TODO(), metav1.ListOptions{})
 
 				for _, pod := range pods.Items {
-					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name)) {
-						fmt.Printf(fmt.Sprintf("Player %s killed %s:pod:%s\n", p.Name(), pod.Namespace, pod.Name))
+					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name)) || pod.Status.Phase == v1.PodSucceeded || pod.Status.Phase == v1.PodFailed {
+						fmt.Printf(fmt.Sprintf("Player %s killed %s:pod:%s phase:%s\n", p.Name(), pod.Namespace, pod.Name, pod.Status.Phase))
 						clientset.CoreV1().Pods(pod.Namespace).Delete(context.TODO(), pod.Name, metav1.DeleteOptions{})
 						playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
 					}
