@@ -85,31 +85,70 @@ func main() {
 						// Read Namespaces Env - Compile list of selected namespaces
 						namespaces, _ := clientset.CoreV1().Namespaces().List(context.TODO(), metav1.ListOptions{})
 
-						if len(passedNamespaces) > 0 {
-							passedNamespacesList := strings.Split(passedNamespaces, ",")
-							for _, ns := range namespaces.Items {
-								for _, envns := range passedNamespacesList {
-									if strings.EqualFold(ns.Name, envns) {
-										selectednamespaces = append(selectednamespaces, ns.Name)
-									}
-								}
-							}
-							if len(selectednamespaces) < 4 { // if less than 4 specified, select until length is 4
+						if !playerInitMap[playerName] {
+							playerInitMap[playerName] = true
+							fmt.Println("initialized!")
+			
+							// Read Namespaces Env - Compile list of selected namespaces based on the environment variable
+							namespaces, _ := clientset.CoreV1().Namespaces().List(context.TODO(), metav1.ListOptions{})
+			
+							if len(passedNamespaces) > 0 {
+								passedNamespacesList := strings.Split(passedNamespaces, ",")
+			
+								// 環境変数の値を含む名前空間をフィルタリング
 								for _, ns := range namespaces.Items {
-									if !Contains(selectednamespaces, ns.Name) {
-										selectednamespaces = append(selectednamespaces, ns.Name)
-										if len(selectednamespaces) == 4 {
-											break
+									for _, envns := range passedNamespacesList {
+										if strings.Contains(ns.Name, envns) { // 部分一致の確認
+											selectednamespaces = append(selectednamespaces, ns.Name)
 										}
 									}
 								}
+			
+								// フィルタリングされた名前空間が4つ未満の場合、さらに追加
+								if len(selectednamespaces) < 4 {
+									for _, ns := range namespaces.Items {
+										if !Contains(selectednamespaces, ns.Name) {
+											selectednamespaces = append(selectednamespaces, ns.Name)
+											if len(selectednamespaces) == 4 {
+												break
+											}
+										}
+									}
+								}
+							} else {
+								// 環境変数が設定されていない場合、最初の4つの名前空間を選択
+								for i := 0; i < 4; i++ {
+									selectednamespaces = append(selectednamespaces, namespaces.Items[i].Name)
+									fmt.Println("namespace ", selectednamespaces)
+								}
 							}
-						} else {
-							for i := 0; i < 4; i++ {
-								selectednamespaces = append(selectednamespaces, namespaces.Items[i].Name)
-								fmt.Println("namespace ", selectednamespaces)
-							}
-						}
+
+
+//						if len(passedNamespaces) > 0 {
+//							passedNamespacesList := strings.Split(passedNamespaces, ",")
+//							for _, ns := range namespaces.Items {
+//								for _, envns := range passedNamespacesList {
+//									if strings.EqualFold(ns.Name, envns) {
+//										selectednamespaces = append(selectednamespaces, ns.Name)
+//									}
+//								}
+//							}
+//							if len(selectednamespaces) < 4 { // if less than 4 specified, select until length is 4
+//								for _, ns := range namespaces.Items {
+//									if !Contains(selectednamespaces, ns.Name) {
+//										selectednamespaces = append(selectednamespaces, ns.Name)
+//										if len(selectednamespaces) == 4 {
+//											break
+//										}
+//									}
+//								}
+//							}
+//						} else {
+//							for i := 0; i < 4; i++ {
+//								selectednamespaces = append(selectednamespaces, namespaces.Items[i].Name)
+//								fmt.Println("namespace ", selectednamespaces)
+//							}
+//						}
 
 						fmt.Println("Selected namespaces: ", selectednamespaces)
 
