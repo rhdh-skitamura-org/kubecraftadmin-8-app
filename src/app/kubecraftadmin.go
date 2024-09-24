@@ -55,13 +55,12 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 				}
 			}
 
-			for _, ns {
-				kubeentities = append(kubeentities, fmt.Sprintf("%s", ns))
-				playerKubeMap[p.Name()] = kubeentities
-				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", ns)) {
-					Summonpos(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", ns))
-				}
+			kubeentities = append(kubeentities, fmt.Sprintf("%s", ns))
+			playerKubeMap[p.Name()] = kubeentities
+			if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", ns)) {
+				Summonpos(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", ns))
 			}
+
 //			for _, deployment := range deployments.Items {
 //				kubeentities = append(kubeentities, fmt.Sprintf("%s:deployment:%s", deployment.Namespace, deployment.Name))
 //				playerKubeMap[p.Name()] = kubeentities
