@@ -28,7 +28,6 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 		// Get all Kube entities per namespace
 		for i, ns := range selectednamespaces {
 			pods, _ := clientset.CoreV1().Pods(ns).List(context.TODO(), metav1.ListOptions{})
-			namespaces := ns
 //			services, _ := clientset.CoreV1().Services(ns).List(context.TODO(), metav1.ListOptions{})
 //			deployments, _ := clientset.AppsV1().Deployments(ns).List(context.TODO(), metav1.ListOptions{})
 //			rc, _ := clientset.AppsV1().ReplicaSets(ns).List(context.TODO(), metav1.ListOptions{})
@@ -56,11 +55,11 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 				}
 			}
 
-			for _, namespace := range namespaces.Items {
-				kubeentities = append(kubeentities, fmt.Sprintf("%s", namespaces.Namespace))
+			for _, ns {
+				kubeentities = append(kubeentities, fmt.Sprintf("%s", ns))
 				playerKubeMap[p.Name()] = kubeentities
-				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", namespaces.Namespace)) {
-					Summonpos(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", namespaces.Namespace))
+				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", ns)) {
+					Summonpos(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", ns))
 				}
 			}
 //			for _, deployment := range deployments.Items {
@@ -286,16 +285,11 @@ func ReconcileMCtoKubeMob(p *mcwss.Player, clientset *kubernetes.Clientset, mobT
 			playerEntitiesMap[p.Name()] = strings.Fields(victims[1 : len(victims)-1])
 
 			for _, ns := range selectednamespaces {
-				// Get all Kube entities for selected namespace
-				namespaces := ns
-
-				for _, namespace := range namespaces.Items {
-					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", namespaces.Namespace)) {
-						fmt.Printf(fmt.Sprintf("Player %s killed %s\n", p.Name(), namespaces.Namespace))
-						//clientset.AppsV1().Deployments(deployment.Namespace).Delete(context.TODO(), deployment.Name, metav1.DeleteOptions{})
-						// Remove deployment from uniqueIDs to allow recreation
-						playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", namespaces.Namespace))
-					}
+				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", ns)) {
+					fmt.Printf(fmt.Sprintf("Player %s killed %s\n", p.Name(), ns))
+					//clientset.AppsV1().Deployments(deployment.Namespace).Delete(context.TODO(), deployment.Name, metav1.DeleteOptions{})
+					// Remove deployment from uniqueIDs to allow recreation
+					playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", ns))
 				}
 			}
 		})
