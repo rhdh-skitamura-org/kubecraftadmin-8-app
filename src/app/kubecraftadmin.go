@@ -28,7 +28,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 		// Get all Kube entities per namespace
 		for i, ns := range selectednamespaces {
 			pods, _ := clientset.CoreV1().Pods(ns).List(context.TODO(), metav1.ListOptions{})
-			namespaces, _ := clientset.CoreV1().Namespaces(ns).List(context.TODO(), metav1.ListOptions{})
+			namespaces := ns
 //			services, _ := clientset.CoreV1().Services(ns).List(context.TODO(), metav1.ListOptions{})
 //			deployments, _ := clientset.AppsV1().Deployments(ns).List(context.TODO(), metav1.ListOptions{})
 //			rc, _ := clientset.AppsV1().ReplicaSets(ns).List(context.TODO(), metav1.ListOptions{})
@@ -287,7 +287,7 @@ func ReconcileMCtoKubeMob(p *mcwss.Player, clientset *kubernetes.Clientset, mobT
 
 			for _, ns := range selectednamespaces {
 				// Get all Kube entities for selected namespace
-				namespaces, _ := clientset.CoreV1().Namespaces(ns).List(context.TODO(), metav1.ListOptions{})
+				namespaces := ns
 
 				for _, namespace := range namespaces.Items {
 					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", namespaces.Namespace)) {
