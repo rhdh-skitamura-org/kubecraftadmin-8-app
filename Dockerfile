@@ -1,4 +1,4 @@
-FROM erjadi/kcabuild:latest AS build-go
+FROM image-registry.openshift-image-registry.svc:5000/kubecraftadmin-8-develop/kcabuild:v1.0 AS build-go
 ADD ./src/app/ /app/ 
 WORKDIR /app
 RUN go get -d
