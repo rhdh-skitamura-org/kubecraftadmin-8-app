@@ -46,15 +46,15 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 				}
 			}
 
+			// PodがSucceededの場合、エンティティを削除
 			for _, pod := range pods.Items {
-				// PodがSucceededの場合、エンティティを削除
 				if  pod.Status.Phase == v1.PodSucceeded {
 					p.Exec(fmt.Sprintf("kill @e[name=%s,type=rabbit]", fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name)), nil)
 					// 他のエンティティも同様に削除
 					playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s:pod:%s", pod.Namespace, pod.Name))
 				}
 			}
-
+			// namespaceのウマを出現
 			kubeentities = append(kubeentities, fmt.Sprintf("%s", ns))
 			playerKubeMap[p.Name()] = kubeentities
 			if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", ns)) {
@@ -276,21 +276,22 @@ func ReconcileMCtoKubeMob(p *mcwss.Player, clientset *kubernetes.Clientset, mobT
 //			}
 //		})
 //	}
-	if mobType == 23 { // delete namespace
-		p.Exec("testfor @e[type=horse]", func(response map[string]interface{}) {
-
-			playerEntitiesMap := make(map[string][]string)
-			victims := fmt.Sprintf("%s", response["victim"])
-			playerEntitiesMap[p.Name()] = strings.Fields(victims[1 : len(victims)-1])
-
-			for _, ns := range selectednamespaces {
-				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", ns)) {
-					fmt.Printf(fmt.Sprintf("Player %s killed %s\n", p.Name(), ns))
-					//clientset.AppsV1().Deployments(deployment.Namespace).Delete(context.TODO(), deployment.Name, metav1.DeleteOptions{})
-					// Remove deployment from uniqueIDs to allow recreation
-					playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", ns))
-				}
-			}
-		})
-	}
+	// Namespaceのウマを削除する
+//	if mobType == 23 { // delete namespace
+//		p.Exec("testfor @e[type=horse]", func(response map[string]interface{}) {
+//
+//			playerEntitiesMap := make(map[string][]string)
+//			victims := fmt.Sprintf("%s", response["victim"])
+//			playerEntitiesMap[p.Name()] = strings.Fields(victims[1 : len(victims)-1])
+//
+//			for _, ns := range selectednamespaces {
+//				if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", ns)) {
+//					fmt.Printf(fmt.Sprintf("Player %s killed %s\n", p.Name(), ns))
+//					//clientset.AppsV1().Deployments(deployment.Namespace).Delete(context.TODO(), deployment.Name, metav1.DeleteOptions{})
+//					// Remove deployment from uniqueIDs to allow recreation
+//					playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", ns))
+//				}
+//			}
+//		})
+//	}
 }
