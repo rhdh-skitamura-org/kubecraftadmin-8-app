@@ -61,12 +61,6 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 							Summonpos(p, clientset, namespacesp[i], "creeper", fmt.Sprintf("%s", pod.Name))
 						}
 					}
-
-					if Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
-						if pod.Status.Phase == v1.PodFailed {
-							SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
-						}
-					}
 				}
 			}
 
@@ -89,6 +83,15 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 			for _, pod := range pods.Items {
 				if  pod.Status.Phase == v1.PodSucceeded {
 					p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", fmt.Sprintf("%s", pod.Name)), nil)
+					// 他のエンティティも同様に削除
+					playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
+				}
+			}
+			// PodがFailedの場合、エンティティを削除
+			for _, pod := range pods.Items {
+				if  pod.Status.Phase == v1.PodFailed {
+					p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", fmt.Sprintf("%s", pod.Name)), nil)
+					SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
 					// 他のエンティティも同様に削除
 					playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
 				}
