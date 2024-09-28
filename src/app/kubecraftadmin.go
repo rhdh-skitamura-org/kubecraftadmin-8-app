@@ -94,7 +94,9 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 						p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", fmt.Sprintf("%s", pod.Name)), nil)
 						SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
 						playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
+						fmt.Printf("Execute ReconcileMCtoKubeMob")
 						ReconcileMCtoKubeMob(p, clientset, 23)
+						fmt.Printf("End ReconcileMCtoKubeMob")
 					}
 				}
 			}
@@ -188,6 +190,7 @@ func LoopReconcile(p *mcwss.Player, clientset *kubernetes.Clientset) {
 
 // ReconcileMCtoKubeMob will delete a specific resource from Kubernetes based on the entities found in Minecraft. Typically run after mob event.
 func ReconcileMCtoKubeMob(p *mcwss.Player, clientset *kubernetes.Clientset, mobType int) {
+	fmt.Printf("Start ReconcileMCtoKubeMob")
 	fmt.Println("mob type ", mobType)
 	if mobType == 23 { // delete pod
 		p.Exec("testfor @e[type=horse]", func(response map[string]interface{}) {
