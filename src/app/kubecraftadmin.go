@@ -52,7 +52,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 					playerKubeMap[p.Name()] = kubeentities
 					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
 						if pod.Status.Phase == v1.PodRunning {
-							Summonpos(p, clientset, namespacesp[i], "zombie", fmt.Sprintf("%s", pod.Name))
+							Summonpos(p, clientset, namespacesp[i], "creeper", fmt.Sprintf("%s", pod.Name))
 						}
 					}
 				}
@@ -61,7 +61,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 			// PodがSucceededの場合、エンティティを削除
 			for _, pod := range pods.Items {
 				if  pod.Status.Phase == v1.PodSucceeded {
-					p.Exec(fmt.Sprintf("kill @e[name=%s,type=zombie]", fmt.Sprintf("%s", pod.Name)), nil)
+					p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", fmt.Sprintf("%s", pod.Name)), nil)
 					// 他のエンティティも同様に削除
 					playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
 				}
@@ -118,7 +118,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 				p.Exec(fmt.Sprintf("kill @e[name=%s,type=goat]", entity), nil)
 				p.Exec(fmt.Sprintf("kill @e[name=%s,type=chicken]", entity), nil)
 				p.Exec(fmt.Sprintf("kill @e[name=%s,type=cow]", entity), nil)
-				p.Exec(fmt.Sprintf("kill @e[name=%s,type=zombie]", entity), nil)
+				p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", entity), nil)
 				playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], entity)
 				time.Sleep(50 * time.Millisecond)
 			}
@@ -139,7 +139,7 @@ func DeleteEntities(p *mcwss.Player) {
 		p.Exec(fmt.Sprintf("kill @e[name=%s,type=goat]", entity), nil)
 		p.Exec(fmt.Sprintf("kill @e[name=%s,type=chicken]", entity), nil)
 		p.Exec(fmt.Sprintf("kill @e[name=%s,type=cow]", entity), nil)
-		p.Exec(fmt.Sprintf("kill @e[name=%s,type=zombie]", entity), nil)
+		p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", entity), nil)
 
 		playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], entity)
 		time.Sleep(50 * time.Millisecond)
