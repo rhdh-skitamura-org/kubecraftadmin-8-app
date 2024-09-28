@@ -124,16 +124,16 @@ func main() {
 							}
 		
 							// フィルタリングされた名前空間が4つ未満の場合、さらに追加
-							if len(selectednamespaces) < 4 {
-								for _, ns := range namespaces.Items {
-									if !Contains(selectednamespaces, ns.Name) {
-										selectednamespaces = append(selectednamespaces, ns.Name)
-										if len(selectednamespaces) == 4 {
-											break
-										}
-									}
-								}
-							}
+							//if len(selectednamespaces) < 4 {
+							//	for _, ns := range namespaces.Items {
+							//		if !Contains(selectednamespaces, ns.Name) {
+							//			selectednamespaces = append(selectednamespaces, ns.Name)
+							//			if len(selectednamespaces) == 4 {
+							//				break
+							//			}
+							//		}
+							//	}
+							//}
 						} else {
 							// 環境変数が設定されていない場合、最初の4つの名前空間を選択
 							for i := 0; i < 4; i++ {
