@@ -42,6 +42,19 @@ func Summonpos(p *mcwss.Player, clientset *kubernetes.Clientset, pos mctype.Posi
 	}
 }
 
+// Summonpos will spawn a named entity in a random area close to the position passed - UniqueID check will prevent spawning an entity more than once
+func SummonposCreeper(p *mcwss.Player, clientset *kubernetes.Clientset, pos mctype.Position, entity string, name string) {
+	if !Contains(playerUniqueIdsMap[p.Name()], name) {
+		playerUniqueIdsMap[p.Name()] = append(playerUniqueIdsMap[p.Name()], name)
+		p.Exec(fmt.Sprintf("summon %s %s %d %d %d minecraft:start_exploding", entity, name, int(pos.X-1.5+3*rand.Float64()), int(pos.Y)-5, int(pos.Z-1.5+3*rand.Float64())), nil)
+
+		time.Sleep(100 * time.Millisecond)
+	} else {
+		fmt.Printf("Entity %s already exists\n", name)
+		//ReconcileMCtoKubeMob(p, clientset, 12)
+	}
+}
+
 // Testforentity will search for a named entity
 func Testforentity(p *mcwss.Player, name string) bool {
 	result := false

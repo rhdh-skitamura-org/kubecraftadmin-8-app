@@ -46,6 +46,20 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 								Summonpos(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", pod.Name))
 							}
 						}
+					} else {
+						kubeentities = append(kubeentities, fmt.Sprintf("%s", pod.Name))
+						playerKubeMap[p.Name()] = kubeentities
+						if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
+							if pod.Status.Phase == v1.PodRunning {
+								SummonposCreeper(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", pod.Name))
+							}
+						}
 					}
 				}
 			}
@@ -62,17 +76,6 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 				}
 			}
 
-			for _, pod := range pods.Items {
-				if _, exists := pod.Labels["kubecraft"]; exists {
-					kubeentities = append(kubeentities, fmt.Sprintf("%s", pod.Name))
-					playerKubeMap[p.Name()] = kubeentities
-					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
-						if pod.Status.Phase == v1.PodRunning {
-							Summonpos(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", pod.Name))
-						}
-					}
-				}
-			}
 
 			// PodがSucceededの場合、エンティティを削除
 			for _, pod := range pods.Items {
