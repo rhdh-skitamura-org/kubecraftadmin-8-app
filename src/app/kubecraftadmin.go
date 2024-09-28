@@ -65,6 +65,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 				}
 			}
 
+			
 			for _, pod := range pods.Items {
 				if _, exists := pod.Labels["pipeline"]; exists {
 					kubeentities = append(kubeentities, fmt.Sprintf("%s", pod.Name))
