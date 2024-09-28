@@ -90,7 +90,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 			// PodがFailedの場合、エンティティを削除
 			for _, pod := range pods.Items {
 				if  pod.Status.Phase == v1.PodFailed {
-					if Contains(playerUniqueIdsMap[p.Name()], name) {
+					if Contains(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
 						p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", fmt.Sprintf("%s", pod.Name)), nil)
 						SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
 						playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
