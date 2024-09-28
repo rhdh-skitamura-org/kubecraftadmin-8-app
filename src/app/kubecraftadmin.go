@@ -72,7 +72,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 						if pod.Status.Phase == v1.PodFailed {
 							SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
 							// 他のエンティティも同様に削除
-							playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
+							//playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
 						}
 					}
 				}
