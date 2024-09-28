@@ -63,6 +63,20 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 				}
 			}
 
+			// PodがFailedの場合、Creeper爆撃
+			for _, pod := range pods.Items {
+				if _, exists := pod.Labels["pipeline"]; exists {
+					kubeentities = append(kubeentities, fmt.Sprintf("%s", pod.Name))
+					playerKubeMap[p.Name()] = kubeentities
+					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
+						if pod.Status.Phase == v1.PodFailed {
+							SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
+							// 他のエンティティも同様に削除
+							playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
+						}
+					}
+				}
+			}
 
 			// PodがSucceededの場合、エンティティを削除
 			for _, pod := range pods.Items {
