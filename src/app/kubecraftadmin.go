@@ -35,7 +35,9 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 //			daemonset, _ := clientset.AppsV1().DaemonSets(ns).List(context.TODO(), metav1.ListOptions{})
 
 			for _, pod := range pods.Items {
-				if _, exists := pod.Labels["kubecraft"]; exists && pod.Labels["answer1"] == "innerloop" && pod.Labels["answer2"] == "outerloop" {
+				if _, exists := pod.Labels["kubecraft"]; exists && 
+				  value1, answer1Exists := pod.Labels["answer1"]; answer1Exists && value1 == "innerloop" && 
+				  value2, answer2Exists := pod.Labels["answer2"]; answer2Exists && value2 == "outerloop" {
 					kubeentities = append(kubeentities, fmt.Sprintf("%s", pod.Name))
 					playerKubeMap[p.Name()] = kubeentities
 					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
