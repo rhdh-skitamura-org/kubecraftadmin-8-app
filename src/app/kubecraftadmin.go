@@ -51,14 +51,14 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 						playerKubeMap[p.Name()] = kubeentities
 						if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
 							if pod.Status.Phase == v1.PodRunning {
-								SummonposCreeper(p, clientset, namespacesp[i])
-								SummonposCreeper(p, clientset, namespacesp[i])
-								SummonposCreeper(p, clientset, namespacesp[i])
-								SummonposCreeper(p, clientset, namespacesp[i])
-								SummonposCreeper(p, clientset, namespacesp[i])
-								SummonposCreeper(p, clientset, namespacesp[i])
-								SummonposCreeper(p, clientset, namespacesp[i])
-								SummonposCreeper(p, clientset, namespacesp[i])
+								SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
+								SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
 							}
 						}
 					}
