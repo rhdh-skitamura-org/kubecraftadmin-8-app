@@ -94,6 +94,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 						p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", fmt.Sprintf("%s", pod.Name)), nil)
 						SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
 						playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
+						ReconcileMCtoKubeMob(p, clientset, 23)
 					}
 				}
 			}
