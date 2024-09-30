@@ -44,6 +44,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 						if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
 							if pod.Status.Phase == v1.PodRunning {
 								Summonpos(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", pod.Name))
+								p.Exec(fmt.Sprintf("title @a actionbar \"%s has been summoned!\"", pod.Name), nil)
 							}
 						}
 					}
@@ -94,7 +95,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 						p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", fmt.Sprintf("%s", pod.Name)), nil)
 						for j := 0; j < 16; j++ {
 							fmt.Printf("Execute Creeper Bomb %d\n", j)
-							p.Exec(fmt.Sprintf("summon creeper %d %d %d minecraft:start_exploding", int(namespacesp[i].X-5+10*rand.Float64()), int(namespacesp[i].Y)-5, int(namespacesp[i].Z-5+10*rand.Float64())), nil)
+							p.Exec(fmt.Sprintf("summon creeper %d %d %d minecraft:start_exploding", int(namespacesp[i].X-5+8*rand.Float64()), int(namespacesp[i].Y)-5, int(namespacesp[i].Z-5+8*rand.Float64())), nil)
 						}
 						time.Sleep(100 * time.Millisecond)
 						//SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
