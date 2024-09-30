@@ -50,7 +50,7 @@ func SummonposCreeper(p *mcwss.Player, clientset *kubernetes.Clientset, pos mcty
     for i := 0; i < 16; i++ {
                 fmt.Printf("Execute Creeper Bomb %d\n", i)
                 p.Exec(fmt.Sprintf("summon creeper %d %d %d minecraft:start_exploding", int(pos.X-1.5+3*rand.Float64()), int(pos.Y)-5, int(pos.Z-1.5+3*rand.Float64())), nil)
-                time.Sleep(100 * time.Millisecond)
+                time.Sleep(300 * time.Millisecond)
         }
         time.Sleep(100 * time.Millisecond)
 }//	p.Exec(fmt.Sprintf("summon creeper %d %d %d minecraft:start_exploding", int(pos.X-1.5+3*rand.Float64()), int(pos.Y)-5, int(pos.Z-1.5+3*rand.Float64())), nil)
@@ -70,15 +70,6 @@ func SummonposCreeper(p *mcwss.Player, clientset *kubernetes.Clientset, pos mcty
 //	time.Sleep(100 * time.Millisecond)
 //}
 
-
-func SummonposCreeper(p *mcwss.Player, clientset *kubernetes.Clientset, pos mctype.Position, name string) {
-    for i := 0; i < 16; i++ {
-		fmt.Printf("Execute Creeper Bomb %d\n", i)
-       		p.Exec(fmt.Sprintf("summon creeper %d %d %d minecraft:start_exploding", int(pos.X-1.5+3*rand.Float64()), int(pos.Y)-5, int(pos.Z-1.5+3*rand.Float64())), nil)
-		time.Sleep(300 * time.Millisecond)
-	}
-	time.Sleep(100 * time.Millisecond)
-}
 
 // Testforentity will search for a named entity
 func Testforentity(p *mcwss.Player, name string) bool {
