@@ -66,15 +66,11 @@ func Summonpos(p *mcwss.Player, clientset *kubernetes.Clientset, pos mctype.Posi
 
 func SummonposCreeper(p *mcwss.Player, clientset *kubernetes.Clientset, pos mctype.Position, name string) {
     for i := 0; i < 16; i++ {
-        p.Exec(fmt.Sprintf("summon creeper %d %d %d minecraft:start_exploding", 
-            int(pos.X-5+10*rand.Float64()), int(pos.Y)-5, int(pos.Z-5+10*rand.Float64())), func(response map[string]interface{}) {
-            if statusMessage, ok := response["statusMessage"].(string); ok {
-                fmt.Println("Status Message:", statusMessage)
-            } else {
-                fmt.Println("Status Message not found.")
-            }
-        })
-        time.Sleep(300 * time.Millisecond)
+		fmt.Printf("Execute Creeper Bomb %d\n", i)
+        p.Exec(fmt.Sprintf("summon creeper %d %d %d minecraft:start_exploding", int(pos.X-5+10*rand.Float64()), int(pos.Y)-5, int(pos.Z-5+10*rand.Float64())), nil)
+		time.Sleep(300 * time.Millisecond)
+		}
+
     }
 }
 
