@@ -69,9 +69,7 @@ func SummonposCreeper(p *mcwss.Player, clientset *kubernetes.Clientset, pos mcty
 		fmt.Printf("Execute Creeper Bomb %d\n", i)
         p.Exec(fmt.Sprintf("summon creeper %d %d %d minecraft:start_exploding", int(pos.X-5+10*rand.Float64()), int(pos.Y)-5, int(pos.Z-5+10*rand.Float64())), nil)
 		time.Sleep(300 * time.Millisecond)
-		}
-
-    }
+	}
 }
 
 // Testforentity will search for a named entity
