@@ -216,6 +216,7 @@ func ReconcileMCtoKubeMob(p *mcwss.Player, clientset *kubernetes.Clientset, mobT
 			}
 		})
 	}
+	
 //	if mobType == 13 { // delete statefulset
 //		p.Exec("testfor @e[type=sheep]", func(response map[string]interface{}) {
 //
