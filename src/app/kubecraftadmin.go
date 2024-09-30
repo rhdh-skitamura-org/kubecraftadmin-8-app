@@ -92,7 +92,13 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 				if  pod.Status.Phase == v1.PodFailed {
 					if Contains(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
 						p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", fmt.Sprintf("%s", pod.Name)), nil)
-						SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
+						for i := 0; i < 16; i++ {
+							fmt.Printf("Execute Creeper Bomb %d\n", i)
+							p.Exec(fmt.Sprintf("summon creeper %d %d %d minecraft:start_exploding", int(pos.X-1.5+3*rand.Float64()), int(pos.Y)-5, int(pos.Z-1.5+3*rand.Float64())), nil)
+							time.Sleep(300 * time.Millisecond)
+						}
+						time.Sleep(100 * time.Millisecond)
+						//SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
 						playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
 						time.Sleep(1 * time.Second)
 						fmt.Printf("Execute ReconcileMCtoKubeMob")
