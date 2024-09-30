@@ -185,7 +185,7 @@ func DeleteEntities(p *mcwss.Player) {
 func LoopReconcile(p *mcwss.Player, clientset *kubernetes.Clientset) {
 	for {
 		ReconcileKubetoMC(p, clientset)
-		time.Sleep(0.5 * time.Second)
+		time.Sleep(500 * time.Millisecond)
 	}
 }
 
