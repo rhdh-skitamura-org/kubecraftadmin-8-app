@@ -31,7 +31,7 @@ func InitArea(p *mcwss.Player) {
 		//Fill(p, pos, -7, -1, -13, -3, -1, -9, "air")
 		//Fill(p, pos, -7, -1, -7, -3, -1, -3, "air")
 		Fill(p, pos, -20, -10, -20, 20, 15, 20, "air")
-		Fill(p, pos, -15, -5, -15, 15, -4, 15, "stone 4")
+		Fill(p, pos, -15, -5, -15, -1, -4, -1, "stone 4")
 		Fill(p, pos, -1, -2, -1, 1, -2, 1, "glass")
 		Fill(p, pos, 0, -2, 0, 0, -2, 0, "beacon")
 		Fill(p, pos, -14, -4, -14, 14, -4, 14, "air")
