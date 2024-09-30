@@ -60,6 +60,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 					if !Contains(playerEntitiesMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
 						if pod.Status.Phase == v1.PodRunning {
 							Summonpos(p, clientset, namespacesp[i], "creeper", fmt.Sprintf("%s", pod.Name))
+							p.Exec(fmt.Sprintf("title @a actionbar \"%s has been summoned!\"", pod.Name), nil)
 						}
 					}
 				}
