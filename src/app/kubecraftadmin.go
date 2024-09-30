@@ -83,30 +83,34 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 
 			// PodがSucceededの場合、エンティティを削除
 			for _, pod := range pods.Items {
-				if  pod.Status.Phase == v1.PodSucceeded {
-					p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", fmt.Sprintf("%s", pod.Name)), nil)
-					// 他のエンティティも同様に削除
-					playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
+				if _, exists := pod.Labels["pipeline"]; exists {
+					if  pod.Status.Phase == v1.PodSucceeded {
+						p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", fmt.Sprintf("%s", pod.Name)), nil)
+						// 他のエンティティも同様に削除
+						playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
+					}
 				}
 			}
 			// PodがFailedの場合、エンティティを削除
 			for _, pod := range pods.Items {
-				if  pod.Status.Phase == v1.PodFailed {
-					if Contains(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
-						p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", fmt.Sprintf("%s", pod.Name)), nil)
-						fmt.Printf("Failed Pod Name: %s\n", pod.Name)
-						for j := 0; j < 16; j++ {
-							fmt.Printf("Execute Creeper Bomb %d\n", j)
-							p.Exec(fmt.Sprintf("summon creeper %d %d %d minecraft:start_exploding", int(namespacesp[i].X-5+9*rand.Float64()), int(namespacesp[i].Y)-2, int(namespacesp[i].Z-5+9*rand.Float64())), nil)
+				if _, exists := pod.Labels["pipeline"]; exists {
+					if  pod.Status.Phase == v1.PodFailed {
+						if Contains(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name)) {
+							p.Exec(fmt.Sprintf("kill @e[name=%s,type=creeper]", fmt.Sprintf("%s", pod.Name)), nil)
+							fmt.Printf("Failed Pod Name: %s\n", pod.Name)
+							for j := 0; j < 16; j++ {
+								fmt.Printf("Execute Creeper Bomb %d\n", j)
+								p.Exec(fmt.Sprintf("summon creeper %d %d %d minecraft:start_exploding", int(namespacesp[i].X-5+9*rand.Float64()), int(namespacesp[i].Y)-2, int(namespacesp[i].Z-5+9*rand.Float64())), nil)
+								time.Sleep(100 * time.Millisecond)
+							}
 							time.Sleep(100 * time.Millisecond)
+							//SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
+							playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
+							time.Sleep(1 * time.Second)
+							fmt.Printf("Execute ReconcileMCtoKubeMob")
+							ReconcileMCtoKubeMob(p, clientset, 23)
+							fmt.Printf("End ReconcileMCtoKubeMob")
 						}
-						time.Sleep(100 * time.Millisecond)
-						//SummonposCreeper(p, clientset, namespacesp[i], fmt.Sprintf("%s", pod.Name))
-						playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
-						time.Sleep(1 * time.Second)
-						fmt.Printf("Execute ReconcileMCtoKubeMob")
-						ReconcileMCtoKubeMob(p, clientset, 23)
-						fmt.Printf("End ReconcileMCtoKubeMob")
 					}
 				}
 			}

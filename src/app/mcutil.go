@@ -120,7 +120,7 @@ func GetPlayerPosition(player *mcwss.Player) {
 // Set Namspace Positions
 func SetNamespacesPosition() {
 	namespacesp = []mctype.Position{
-		{X: initpos.X - 8, Y: initpos.Y + 2, Z: initpos.Z - 8},
+		{X: initpos.X - 9, Y: initpos.Y + 2, Z: initpos.Z - 9},
 		{X: initpos.X - 11, Y: initpos.Y + 2, Z: initpos.Z - 5},
 		{X: initpos.X - 5, Y: initpos.Y + 2, Z: initpos.Z - 11},
 		{X: initpos.X - 5, Y: initpos.Y + 2, Z: initpos.Z - 5},
@@ -129,7 +129,7 @@ func SetNamespacesPosition() {
 
 func SetNamespacesPositionByPos(pos mctype.Position) {
 	namespacesp = []mctype.Position{
-		{X: pos.X - 8, Y: pos.Y + 2, Z: pos.Z - 8},
+		{X: pos.X - 9, Y: pos.Y + 2, Z: pos.Z - 9},
 		{X: pos.X - 11, Y: pos.Y + 2, Z: pos.Z - 5},
 		{X: pos.X - 5, Y: pos.Y + 2, Z: pos.Z - 11},
 		{X: pos.X - 5, Y: pos.Y + 2, Z: pos.Z - 5},
