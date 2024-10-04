@@ -61,6 +61,7 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 						if pod.Status.Phase == v1.PodRunning {
 							Summonpos(p, clientset, namespacesp[i], "creeper", fmt.Sprintf("%s", pod.Name))
 							p.Exec(fmt.Sprintf("title @a actionbar \"%s has been summoned!\"", pod.Name), nil)
+							time.Sleep(200 * time.Millisecond)
 						}
 					}
 				}
@@ -223,6 +224,7 @@ func ReconcileMCtoKubeMob(p *mcwss.Player, clientset *kubernetes.Clientset, mobT
 							fmt.Printf(fmt.Sprintf("Player %s killed %s\n", p.Name(), pod.Name))
 							clientset.CoreV1().Pods(pod.Namespace).Delete(context.TODO(), pod.Name, metav1.DeleteOptions{})
 							playerUniqueIdsMap[p.Name()] = Remove(playerUniqueIdsMap[p.Name()], fmt.Sprintf("%s", pod.Name))
+							time.Sleep(100 * time.Millisecond)
 						}
 					}
 				}
