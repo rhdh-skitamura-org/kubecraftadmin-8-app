@@ -36,7 +36,7 @@ spec:
   type: api
   system: system:default/test-system-github
   lifecycle: production
-  owner: group:rhdh-skitamura-org/skitamura-team
+  owner: "user:default/skitamura7446"
   git: github
   git_host_url: github.com
   git_owner_name: rhdh-skitamura-org
