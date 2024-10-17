@@ -136,7 +136,7 @@ func main() {
 							//}
 						} else {
 							// 環境変数が設定されていない場合、最初の4つの名前空間を選択
-							for i := 0; i < 4; i++ {
+							for i := 0; i < 1; i++ {
 								selectednamespaces = append(selectednamespaces, namespaces.Items[i].Name)
 								fmt.Println("namespace ", selectednamespaces)
 							}

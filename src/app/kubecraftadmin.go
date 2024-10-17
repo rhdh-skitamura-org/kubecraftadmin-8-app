@@ -18,6 +18,7 @@ var wolf bool = false
 
 // ReconcileKubetoMC queries Kubernetes cluster for resources and removes / spawns entities accordingly in Minecraft
 func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
+	fmt.Println("iReconcileKubetoMC")
 	synclock.Lock()
 	p.Exec("testfor @e", func(response map[string]interface{}) {
 
