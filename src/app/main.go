@@ -28,6 +28,7 @@ var playerEntitiesMap = make(map[string][]string)
 
 // ENV paramaters
 var passedNamespaces = os.Getenv("namespaces")
+fmt.Println(passedNamespaces)
 var accessWithinCluster = os.Getenv("accessWithinCluster")
 
 func main() {
