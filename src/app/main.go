@@ -86,15 +86,15 @@ func main() {
 						// Read Namespaces Env - Compile list of selected namespaces
 						namespaces, _ := clientset.CoreV1().Namespaces().List(context.TODO(), metav1.ListOptions{})
 
-//						if len(passedNamespaces) > 0 {
-//							passedNamespacesList := strings.Split(passedNamespaces, ",")
-//							for _, ns := range namespaces.Items {
-//								for _, envns := range passedNamespacesList {
-//									if strings.EqualFold(ns.Name, envns) {
-//										selectednamespaces = append(selectednamespaces, ns.Name)
-//									}
-//								}
-//							}
+						if len(passedNamespaces) > 0 {
+							passedNamespacesList := strings.Split(passedNamespaces, ",")
+							for _, ns := range namespaces.Items {
+								for _, envns := range passedNamespacesList {
+									if strings.EqualFold(ns.Name, envns) {
+										selectednamespaces = append(selectednamespaces, ns.Name)
+									}
+								}
+							}
 //							if len(selectednamespaces) < 4 { // if less than 4 specified, select until length is 4
 //								for _, ns := range namespaces.Items {
 //									if !Contains(selectednamespaces, ns.Name) {
@@ -143,10 +143,7 @@ func main() {
 						//	}
 						//}
 
-						//fmt.Println("Selected namespaces: ", selectednamespaces)
-						selectednamespaces = passedNamespaces
 						fmt.Println("Selected namespaces: ", selectednamespaces)
-
 						go LoopReconcile(player, clientset)
 					}
 				}
