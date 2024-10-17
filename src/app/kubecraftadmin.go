@@ -18,7 +18,7 @@ var wolf bool = false
 
 // ReconcileKubetoMC queries Kubernetes cluster for resources and removes / spawns entities accordingly in Minecraft
 func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
-	fmt.Println("iReconcileKubetoMC")
+	fmt.Println("ReconcileKubetoMC")
 	synclock.Lock()
 	p.Exec("testfor @e", func(response map[string]interface{}) {
 
@@ -34,7 +34,6 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 //			rc, _ := clientset.AppsV1().ReplicaSets(ns).List(context.TODO(), metav1.ListOptions{})
 //			statefulset, _ := clientset.AppsV1().StatefulSets(ns).List(context.TODO(), metav1.ListOptions{})
 //			daemonset, _ := clientset.AppsV1().DaemonSets(ns).List(context.TODO(), metav1.ListOptions{})
-			count := 0
 			for _, pod := range pods.Items {
 				if _, exists := pod.Labels["kubecraft"]; exists {
 					value1, answer1Exists := pod.Labels["answer1"]
@@ -46,13 +45,9 @@ func ReconcileKubetoMC(p *mcwss.Player, clientset *kubernetes.Clientset) {
 							if pod.Status.Phase == v1.PodRunning {
 								Summonpos(p, clientset, namespacesp[i], "horse", fmt.Sprintf("%s", pod.Name))
 								p.Exec(fmt.Sprintf("title @a actionbar \"%s has been summoned!\"", pod.Name), nil)
-								count++
 							}
 						}
 					}
-				}
-				if count % 5 == 0 {
-					time.Sleep(2 * time.Second)
 				}
 			}
 
